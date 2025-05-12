@@ -10,6 +10,6 @@ tinyauth SECRET_KEY #> returns secret code
 
 ## Installation
 ```bash
-go install github.com/niliaranet/tinyauth@latest
+go install github.com/niliaranet/tinyauth/cmd/tinyauth@latest
 ```
 
