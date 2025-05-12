@@ -14,7 +14,6 @@ func main() {
 	}
 
 	secret := os.Args[1]
-	fmt.Println(secret)
 	code := totp.GenerateTOTP(secret)
 	fmt.Println(code)
 }
