@@ -9,7 +9,7 @@ func ValidateKey(inputKey uint, secret []byte, margin uint) (bool, error) {
 	currentCount := totpCounter.GetCurrent()
 	counters := []uint{totpCounter.GetCurrent()}
 
-	for i := uint(1); i < margin; i++ {
+	for i := uint(1); i <= margin; i++ {
 		counters = append(counters, currentCount+i)
 		counters = append(counters, currentCount-i)
 	}
