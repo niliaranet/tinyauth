@@ -4,14 +4,14 @@ import (
 	"crypto/hmac"
 	"crypto/sha1"
 
-	"github.com/niliaranet/tinyauth/pkg/totp/counter"
+	"github.com/niliaranet/tinyauth/totp/counter"
 )
 
-func GenerateCurrentTOTP(secret []byte) (uint, error) {
-	return GenerateTOTP(secret, counter.GetCurrentCounter())
+func GenerateFromLocalTime(secret []byte) (uint, error) {
+	return GenerateKey(secret, counter.GetCurrent())
 }
 
-func GenerateTOTP(secret []byte, counter uint) (uint, error) {
+func GenerateKey(secret []byte, counter uint) (uint, error) {
 	counterByte := make([]byte, 8)
 	for i := 7; i >= 0; i-- {
 		counterByte[i] = byte(counter & 0xff)

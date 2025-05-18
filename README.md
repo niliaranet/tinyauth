@@ -1,15 +1,20 @@
-> Development in progress
+> Development in progress, do not use
 # tinyauth
 Tiny 2fa authenticator client app
-to handle TOTP algorithms without any bloat.
+to handle TOTP algorithms.
 
-## Usage
+## Client utility
+Tinyauth can be used as a very basic authenticator client.
+Currently it's just inputs and outputs:
+
 ```bash
 tinyauth SECRET_KEY #> returns secret code
 ```
 
-## Installation
+### Installation
 ```bash
 go install github.com/niliaranet/tinyauth/cmd/tinyauth@latest
 ```
 
+## Server utility
+> \!todo

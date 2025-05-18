@@ -1,27 +1,25 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"os"
 
-	"github.com/niliaranet/tinyauth/pkg/totp"
+	"github.com/niliaranet/tinyauth/totp"
 )
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("Please provide a valid secret code!")
+		println("Please provide a valid secret code!")
 		return
 	}
 
 	secretString := os.Args[1]
 	secretB32 := []byte(secretString)
 
-	code, err := totp.GenerateCurrentTOTP(secretB32)
+	code, err := totp.GenerateFromLocalTime(secretB32)
 	if err != nil {
-		log.Println(err)
+		println(err)
 		return
 	}
 
-	fmt.Println(code)
+	println(code)
 }
