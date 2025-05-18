@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/niliaranet/tinyauth/pkg/totp"
@@ -13,7 +14,14 @@ func main() {
 		return
 	}
 
-	secret := os.Args[1]
-	code := totp.GenerateTOTP(secret)
+	secretString := os.Args[1]
+	secretB32 := []byte(secretString)
+
+	code, err := totp.GenerateCurrentTOTP(secretB32)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
 	fmt.Println(code)
 }

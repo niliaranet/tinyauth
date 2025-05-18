@@ -3,27 +3,27 @@ package totp
 import (
 	"crypto/hmac"
 	"crypto/sha1"
-	"encoding/base32"
-	"time"
+
+	"github.com/niliaranet/tinyauth/pkg/totp/counter"
 )
 
-func GenerateTOTP(secret string) any {
-	counter := uint(time.Now().Unix() / 30)
+func GenerateCurrentTOTP(secret []byte) (uint, error) {
+	return GenerateTOTP(secret, counter.GetCurrentCounter())
+}
 
+func GenerateTOTP(secret []byte, counter uint) (uint, error) {
 	counterByte := make([]byte, 8)
 	for i := 7; i >= 0; i-- {
 		counterByte[i] = byte(counter & 0xff)
 		counter >>= 8
 	}
 
-	secretByte, _ := base32.StdEncoding.DecodeString(secret)
-	hash := hmac.New(sha1.New, secretByte)
-	_, err := hash.Write(counterByte)
-	if err != nil {
-		panic(err)
+	hash := hmac.New(sha1.New, secret)
+	if _, err := hash.Write(counterByte); err != nil {
+		return 0, err
 	}
-	hmacBytes := hash.Sum(nil)
 
+	hmacBytes := hash.Sum(nil)
 	offset := hmacBytes[len(hmacBytes)-1] & 0xf
 
 	code := uint(hmacBytes[offset]&0x7f)<<24 |
@@ -31,7 +31,7 @@ func GenerateTOTP(secret string) any {
 		(uint(hmacBytes[offset+2])&0xff)<<8 |
 		(uint(hmacBytes[offset+3]) & 0xff)
 
-	code = code % 1000000
+	code %= 1000000
 
-	return code
+	return code, nil
 }
